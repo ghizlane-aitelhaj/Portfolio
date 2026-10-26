@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghizlane Aitelhaj — Data Engineer & ML</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#F8F6F3;--bg2:#EFECEA;--white:#FFFFFF;
+      --ink:#1A1714;--ink2:#4A4540;--ink3:#8A837D;
+      --accent:#2D5A47;--alight:#E2EDE8;
+      --accent2:#8B4A2A;--a2light:#F5EAE2;
+      --gold:#9A7010;--glight:#F5F0E0;
+      --border:rgba(26,23,20,0.1);--border2:rgba(26,23,20,0.06);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;background:rgba(248,246,243,0.93);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s;}
+    nav.scrolled{border-bottom-color:var(--border);box-shadow:0 1px 20px rgba(26,23,20,.05);}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink);text-decoration:none;}
+    .nav-logo span{color:var(--accent);}
+    .nav-links{display:flex;gap:30px;list-style:none;}
+    .nav-links a{text-decoration:none;color:var(--ink3);font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .25s;}
+    .nav-links a:hover{color:var(--ink);}
+    .nav-links a:hover::after{width:100%;}
+    .nav-cta{background:var(--ink)!important;color:var(--bg)!important;padding:7px 18px!important;border-radius:4px!important;font-size:.76rem!important;}
+    .nav-cta:hover{background:var(--accent)!important;}
+    .nav-cta::after{display:none!important;}
+    .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+    .nav-toggle span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all .3s;}
+
+    .hero{min-height:100vh;display:grid;grid-template-columns:1fr 400px;align-items:center;padding:80px 60px 60px;gap:80px;position:relative;overflow:hidden;}
+    .hero-vline{position:absolute;top:0;bottom:0;right:460px;width:1px;background:linear-gradient(to bottom,transparent,var(--border),transparent);}
+    .hero-text{position:relative;z-index:1;animation:fadeUp .8s ease both;}
+    .hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+    .hero-eline{width:32px;height:1px;background:var(--accent);}
+    .hero-eyebrow span{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);}
+    .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,4.5vw,4.2rem);line-height:1.08;color:var(--ink);margin-bottom:8px;}
+    .hero h1 em{font-style:italic;color:var(--accent);}
+    .hero-role{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink3);font-style:italic;margin-bottom:24px;}
+    .hero-desc{font-size:.92rem;color:var(--ink2);line-height:1.75;max-width:520px;margin-bottom:32px;padding-left:16px;border-left:2px solid var(--alight);}
+    .hero-contacts{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:36px;}
+    .hci{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--ink2);text-decoration:none;transition:color .2s;}
+    .hci:hover{color:var(--accent);}
+    .hci .ic{width:20px;height:20px;border-radius:4px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:.62rem;}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:4px;font-size:.82rem;font-weight:500;text-decoration:none;cursor:pointer;transition:all .22s;border:1px solid transparent;letter-spacing:.02em;}
+    .btn-primary{background:var(--ink);color:var(--bg);}
+    .btn-primary:hover{background:var(--accent);transform:translateY(-1px);}
+    .btn-outline{background:transparent;color:var(--ink);border-color:var(--border);}
+    .btn-outline:hover{background:var(--bg2);transform:translateY(-1px);}
+    .hero-panel{position:relative;z-index:1;animation:fadeUp .8s .15s ease both;}
+    .hero-photo-wrap{position:relative;width:100%;height:440px;border-radius:6px;overflow:hidden;margin-bottom:16px;}
+    .hero-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(10%);}
+    .hero-photo-placeholder{width:100%;height:100%;background:linear-gradient(160deg,var(--alight),var(--bg2));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+    .hero-photo-placeholder span{font-family:'Playfair Display',serif;font-size:5rem;color:var(--accent);opacity:.35;}
+    .hero-photo-placeholder p{font-size:.78rem;color:var(--ink3);}
+    .hero-caption{position:absolute;bottom:14px;left:14px;right:14px;background:rgba(26,23,20,.82);backdrop-filter:blur(8px);border-radius:4px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+    .hero-caption p{font-size:.75rem;color:rgba(248,246,243,.9);}
+    .hero-caption small{font-size:.68rem;color:rgba(248,246,243,.45);}
+    .badge-open{display:inline-flex;align-items:center;gap:5px;background:var(--alight);border:1px solid rgba(45,90,71,.2);color:var(--accent);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;}
+    .badge-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:6px;overflow:hidden;}
+    .qs{background:var(--white);padding:14px 10px;text-align:center;}
+    .qs-n{display:block;font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--ink);margin-bottom:2px;}
+    .qs-l{font-size:.65rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;}
+
+    section{padding:90px 60px;}
+    .slabel{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+    .slabel-line{width:28px;height:1px;background:var(--accent);}
+    .slabel span{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
+    .stitle{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,2.8vw,2.5rem);color:var(--ink);line-height:1.18;margin-bottom:8px;}
+    .ssub{font-size:.88rem;color:var(--ink3);line-height:1.7;max-width:500px;}
+    .sheader{margin-bottom:52px;}
+
+    #experience{background:var(--white);}
+    .exp-item{display:grid;grid-template-columns:170px 1fr;gap:40px;padding:36px 0;border-bottom:1px solid var(--border2);}
+    .exp-item:last-child{border-bottom:none;}
+    .exp-date{font-size:.76rem;color:var(--ink3);margin-bottom:4px;}
+    .exp-loc{font-size:.72rem;color:var(--ink3);}
+    .exp-loc::before{content:'⌖ ';}
+    .exp-company{font-weight:600;font-size:.98rem;color:var(--ink);margin-bottom:3px;}
+    .exp-role{font-family:'Playfair Display',serif;font-style:italic;font-size:.88rem;color:var(--accent);margin-bottom:14px;}
+    .exp-bul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+    .exp-bul li{font-size:.83rem;color:var(--ink2);line-height:1.6;display:flex;align-items:flex-start;gap:8px;}
+    .exp-bul li::before{content:'—';color:var(--ink3);flex-shrink:0;margin-top:1px;}
+    .etags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
+    .etag{font-size:.68rem;font-weight:500;padding:3px 8px;border-radius:3px;background:var(--bg2);color:var(--ink2);}
+    .etag-g{background:var(--alight);color:var(--accent);}
+    .etag-w{background:var(--a2light);color:var(--accent2);}
+    .etag-gold{background:var(--glight);color:var(--gold);}
+
+    #projects{background:var(--bg);}
+    .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;}
+    .pcard{background:var(--white);border:1px solid var(--border2);border-radius:6px;overflow:hidden;transition:transform .22s,box-shadow .22s;}
+    .pcard:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,23,20,.08);}
+    .phead{height:110px;display:flex;align-items:flex-end;padding:14px;position:relative;}
+    .phead.green{background:#D4E8DC;}
+    .phead.warm{background:#F0E0D4;}
+    .phead.purple{background:#E2DFF0;}
+    .phead.blue{background:#D4E4F0;}
+    .phead.gold{background:#EDE8D4;}
+    .pnum{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:600;opacity:.13;color:var(--ink);position:absolute;top:6px;right:14px;line-height:1;}
+    .picon{width:36px;height:36px;border-radius:7px;background:rgba(255,255,255,.72);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+    .pbody{padding:20px;}
+    .ptags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+    .pbody h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--ink);margin-bottom:8px;line-height:1.3;}
+    .pbody p{font-size:.8rem;color:var(--ink3);line-height:1.6;margin-bottom:14px;}
+    .pfoot{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border2);}
+    .pstatus{display:flex;align-items:center;gap:5px;font-size:.7rem;font-weight:500;}
+    .psdot{width:5px;height:5px;border-radius:50%;}
+    .ps-live{color:var(--accent);}
+    .ps-live .psdot{background:var(--accent);animation:pulse 2s infinite;}
+    .ps-done{color:var(--ink3);}
+    .ps-done .psdot{background:var(--ink3);}
+
+    #skills{background:var(--white);}
+    .skgrid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+    .skgroup{margin-bottom:28px;}
+    .skgroup:last-child{margin-bottom:0;}
+    .skgroup-title{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+    .spills{display:flex;flex-wrap:wrap;gap:7px;}
+    .spill{font-size:.76rem;padding:5px 12px;border-radius:3px;border:1px solid var(--border);color:var(--ink2);background:var(--bg);transition:all .2s;}
+    .spill:hover{background:var(--bg2);border-color:rgba(26,23,20,.2);color:var(--ink);}
+    .spill.s{background:var(--alight);border-color:rgba(45,90,71,.2);color:var(--accent);}
+    .lgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .litem{padding:12px 14px;background:var(--bg);border:1px solid var(--border2);border-radius:4px;}
+    .lname{font-weight:500;font-size:.83rem;color:var(--ink);margin-bottom:2px;}
+    .llevel{font-size:.72rem;color:var(--ink3);}
+
+    #education{background:var(--bg2);}
+    .edu-item{display:grid;grid-template-columns:160px 1fr;gap:40px;padding:26px 0;border-bottom:1px solid var(--border2);}
+    .edu-item:last-child{border-bottom:none;}
+    .edu-yr{font-size:.76rem;color:var(--ink3);}
+    .edu-school{font-weight:600;font-size:.93rem;color:var(--ink);margin-bottom:2px;}
+    .edu-prog{font-family:'Playfair Display',serif;font-style:italic;font-size:.85rem;color:var(--accent2);margin-bottom:3px;}
+    .edu-loc{font-size:.72rem;color:var(--ink3);}
+
+    #certificates{background:var(--white);}
+    .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;}
+    .ccard{border:1px solid var(--border2);border-radius:4px;padding:20px 16px;transition:all .22s;text-decoration:none;display:block;background:var(--bg);}
+    .ccard:hover{background:var(--white);border-color:var(--border);transform:translateY(-2px);box-shadow:0 8px 20px rgba(26,23,20,.06);}
+    .clogo{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:.95rem;}
+    .ccard h3{font-size:.86rem;font-weight:600;color:var(--ink);margin-bottom:3px;}
+    .ccard p{font-size:.73rem;color:var(--ink3);line-height:1.4;margin-bottom:10px;}
+    .cdl{font-size:.7rem;font-weight:500;color:var(--accent);}
+
+    #activities{background:var(--bg);}
+    .agrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .acard{background:var(--white);border:1px solid var(--border2);border-radius:6px;padding:28px;}
+    .atop{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+    .abadge{font-size:.63rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+    .abadge-g{background:var(--alight);color:var(--accent);}
+    .abadge-w{background:var(--a2light);color:var(--accent2);}
+    .acard h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink);margin-bottom:4px;}
+    .arole{font-size:.75rem;font-style:italic;color:var(--accent2);margin-bottom:10px;}
+    .acard p{font-size:.81rem;color:var(--ink2);line-height:1.65;margin-bottom:12px;}
+    .apts{list-style:none;display:flex;flex-direction:column;gap:4px;}
+    .apts li{font-size:.77rem;color:var(--ink3);padding-left:13px;position:relative;line-height:1.5;}
+    .apts li::before{content:'·';position:absolute;left:0;color:var(--accent);font-size:1.2rem;line-height:1.1;}
+
+    #contact{background:var(--ink);}
+    .cwrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    #contact .slabel-line{background:rgba(248,246,243,.25);}
+    #contact .slabel span{color:rgba(248,246,243,.45);}
+    #contact .stitle{color:var(--bg);}
+    #contact .ssub{color:rgba(248,246,243,.45);}
+    .citems{display:flex;flex-direction:column;gap:9px;margin-top:28px;}
+    .ci{display:flex;align-items:center;gap:13px;padding:13px 16px;background:rgba(248,246,243,.04);border:1px solid rgba(248,246,243,.08);border-radius:4px;text-decoration:none;color:var(--bg);font-size:.81rem;transition:all .2s;}
+    .ci:hover{background:rgba(248,246,243,.08);border-color:rgba(248,246,243,.14);transform:translateX(3px);}
+    .ci-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+    .ci-text strong{display:block;font-weight:500;font-size:.81rem;margin-bottom:1px;}
+    .ci-text span{font-size:.7rem;opacity:.4;}
+    .cvbox{background:rgba(248,246,243,.04);border:1px solid rgba(248,246,243,.1);border-radius:6px;padding:38px;text-align:center;}
+    .cvbox h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--bg);margin-bottom:8px;}
+    .cvbox p{font-size:.81rem;color:rgba(248,246,243,.4);margin-bottom:26px;line-height:1.65;}
+    .btn-light{background:var(--bg);color:var(--ink);}
+    .btn-light:hover{background:var(--alight);transform:translateY(-1px);}
+
+    footer{background:#100E0C;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;}
+    footer p,footer a{font-size:.73rem;color:rgba(248,246,243,.22);text-decoration:none;transition:color .2s;}
+    footer a:hover{color:rgba(248,246,243,.55);}
+    footer .flinks{display:flex;gap:18px;}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+
+    /* ===== PROJECT DETAIL ===== */
+    .project-trigger{
+      display:inline-flex;align-items:center;gap:7px;
+      background:none;border:0;padding:0;cursor:pointer;
+      color:var(--accent);font:500 .7rem 'Inter',sans-serif;
+      text-decoration:none;
+    }
+    .project-trigger:hover{text-decoration:underline;text-underline-offset:3px;}
+    .project-modal{
+      position:fixed;inset:0;z-index:300;
+      display:none;align-items:center;justify-content:center;
+      padding:34px;
+      background:rgba(16,14,12,.72);
+      backdrop-filter:blur(8px);
+    }
+    .project-modal.open{display:flex;}
+    .project-modal-card{
+      width:min(1080px,100%);
+      max-height:92vh;overflow:auto;
+      background:var(--bg);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;
+      box-shadow:0 30px 80px rgba(0,0,0,.28);
+      animation:modalIn .28s ease both;
+    }
+    .project-modal-top{
+      padding:34px 38px 28px;
+      background:linear-gradient(135deg,#F0E0D4,#F8F6F3);
+      border-bottom:1px solid var(--border2);
+      position:relative;
+    }
+    .project-modal-label{
+      font-size:.66rem;font-weight:600;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--accent2);margin-bottom:10px;
+    }
+    .project-modal-top h2{
+      font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.7rem);
+      line-height:1.12;margin-bottom:10px;
+    }
+    .project-modal-top p{
+      max-width:760px;color:var(--ink2);font-size:.88rem;line-height:1.7;
+    }
+    .project-close{
+      position:absolute;right:22px;top:20px;
+      width:36px;height:36px;border-radius:50%;
+      border:1px solid var(--border);background:rgba(255,255,255,.7);
+      color:var(--ink);font-size:1.2rem;cursor:pointer;
+    }
+    .project-close:hover{background:var(--white);}
+    .project-modal-body{padding:34px 38px 40px;}
+
+    /* Image de couverture du projet */
+    .project-cover{margin:0 0 36px;min-width:0;}
+    .project-cover img{display:block;width:100%;height:auto;max-height:540px;object-fit:contain;border-radius:8px;border:1px solid var(--border2);background:var(--white);}
+    .project-cover figcaption{font-size:.72rem;color:var(--ink3);margin-top:10px;line-height:1.5;}
+    .project-hero-image{
+      width:100%;height:390px;object-fit:cover;object-position:center;
+      border-radius:7px;border:1px solid var(--border2);
+      background:var(--white);display:block;
+    }
+    .project-caption{
+      margin-top:8px;font-size:.68rem;color:var(--ink3);
+    }
+    .project-grid{
+      display:grid;grid-template-columns:1.15fr .85fr;gap:34px;margin-top:34px;
+    }
+    .project-block{margin-bottom:28px;}
+    .project-block h3{
+      font-family:'Playfair Display',serif;font-size:1.18rem;margin-bottom:10px;
+    }
+    .project-block p{
+      font-size:.81rem;color:var(--ink2);line-height:1.75;
+    }
+    .project-list{
+      list-style:none;display:flex;flex-direction:column;gap:8px;
+    }
+    .project-list li{
+      font-size:.79rem;color:var(--ink2);line-height:1.55;
+      padding-left:16px;position:relative;
+    }
+    .project-list li::before{
+      content:'—';position:absolute;left:0;color:var(--accent2);
+    }
+    .project-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .project-tag{
+      font-size:.68rem;font-weight:500;padding:5px 9px;border-radius:3px;
+      background:var(--a2light);color:var(--accent2);
+    }
+    .project-architecture{
+      margin-top:8px;padding:20px;background:var(--white);
+      border:1px solid var(--border2);border-radius:7px;
+    }
+    .project-architecture img{
+      width:100%;max-height:340px;object-fit:contain;display:block;
+    }
+    .project-steps{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;
+    }
+    .project-step{
+      padding:14px;background:var(--white);border:1px solid var(--border2);
+      border-radius:5px;
+    }
+    .project-step strong{
+      display:block;font-size:.74rem;color:var(--ink);margin-bottom:4px;
+    }
+    .project-step span{font-size:.7rem;color:var(--ink3);line-height:1.5;}
+    .project-actions{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;
+    }
+    .phead-photo {
+    height: 190px;
+    padding: 0;
+    overflow: hidden;
+    background: #f0e0d4;
+  }
+
+  .project-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+  }
+
+  .pcard:hover .project-card-image {
+    transform: scale(1.05);
+  }
+    @keyframes modalIn{
+      from{opacity:0;transform:translateY(12px) scale(.985);}
+      to{opacity:1;transform:translateY(0) scale(1);}
+    }
+    @media(max-width:760px){
+      .project-modal{padding:12px;}
+      .project-modal-top,.project-modal-body{padding:24px 20px;}
+      .project-grid{grid-template-columns:1fr;gap:0;}
+      .project-hero-image{height:260px;}
+      .project-steps{grid-template-columns:1fr;}
+    }
+
+
+    /* Project screenshot gallery: responsive, no horizontal overflow */
+    .project-modal-card{overflow-x:hidden;}
+    .project-modal-body,.project-showcase,.showcase-step{min-width:0;}
+    .project-showcase{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-bottom:38px;}
+    .showcase-intro{margin-bottom:2px;}
+    .showcase-intro span{font-size:.69rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+    .showcase-intro h3{font-family:'Playfair Display',serif;font-size:1.55rem;margin:8px 0;}
+    .showcase-intro p{font-size:.83rem;color:var(--ink3);line-height:1.65;}
+    .showcase-step{padding:22px;border:1px solid var(--border2);background:var(--white);border-radius:9px;overflow:hidden;}
+    .showcase-featured{border-color:rgba(45,90,71,.25);background:#F6FAF7;}
+    .showcase-heading{display:flex;align-items:flex-start;gap:16px;margin-bottom:18px;}
+    .showcase-index{font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--accent);line-height:1.1;flex-shrink:0;}
+    .showcase-heading h4{font-size:.99rem;color:var(--ink);margin-bottom:5px;}
+    .showcase-heading p{font-size:.79rem;color:var(--ink3);line-height:1.55;}
+    .showcase-step img{display:block;width:100%;max-width:100%;height:auto;max-height:480px;object-fit:contain;object-position:center;border-radius:6px;background:#f1f2f4;border:1px solid var(--border2);}
+    .showcase-step .project-caption{margin-top:10px;line-height:1.5;}
+    @media(max-width:760px){.showcase-step{padding:14px;}.showcase-step img{max-height:340px;}.showcase-heading{gap:11px;}}
+
+    @media(max-width:960px){
+      nav{padding:0 24px;}
+      .nav-links{display:none;position:fixed;top:60px;left:0;right:0;flex-direction:column;background:rgba(248,246,243,.97);backdrop-filter:blur(14px);padding:24px;gap:18px;border-bottom:1px solid var(--border);z-index:99;}
+      .nav-links.open{display:flex;}
+      .nav-links a{font-size:.95rem;}
+      .nav-toggle{display:flex;}
+      .hero{grid-template-columns:1fr;padding:88px 24px 56px;gap:36px;}
+      .hero-vline{display:none;}
+      .hero-panel{order:-1;}
+      .hero-photo-wrap{height:280px;}
+      section{padding:60px 24px;}
+      .exp-item,.edu-item{grid-template-columns:1fr;gap:6px;}
+      .skgrid{grid-template-columns:1fr;gap:28px;}
+      .cwrap{grid-template-columns:1fr;gap:36px;}
+      .agrid{grid-template-columns:1fr;}
+      footer{flex-direction:column;gap:6px;text-align:center;padding:16px 24px;}
+    }
+    @media(max-width:500px){
+      .hero h1{font-size:2.4rem;}
+      .pgrid{grid-template-columns:1fr;}
+    }
+
+    /* Football: crop only the card thumbnail; preserve full screenshots in the modal */
+    .football-card-image{object-position:center 38%;}
+    .football-modal .project-modal-top{background:linear-gradient(135deg,#E3EAF0,#F8F6F3);}
+    .football-modal .project-modal-label{color:var(--accent);}
+    .football-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 34px;}
+    .football-metric{padding:20px 14px;background:#fff;border:1px solid var(--border2);border-radius:7px;min-width:0;}
+    .football-metric strong{display:block;font-family:'Playfair Display',serif;font-size:1.65rem;color:var(--accent);margin-bottom:4px;}
+    .football-metric span{font-size:.74rem;color:var(--ink3);line-height:1.5;}
+    .football-modal .showcase-step img{height:auto;max-height:560px;object-fit:contain;}
+    .football-modal .project-cover img{max-height:590px;object-fit:contain;}
+    @media(max-width:600px){.football-metrics{grid-template-columns:1fr;}.football-metric{padding:14px;}}
+  
+/* Cohérence des couvertures et captures des projets */
+.phead-photo{height:190px}.project-card-image{width:100%;height:100%;object-fit:cover;object-position:center}
+#ocpModal .showcase-step img{width:100%;height:auto;max-height:440px;object-fit:contain}
+#hrModal .showcase-step img{width:100%;height:auto;max-height:500px;object-fit:contain;display:block;margin:auto;}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">Ghizlane <span>Aitelhaj</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#education">Formation</a></li>
+    <li><a href="#activities">Activités</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-vline"></div>
+  <div class="hero-text">
+    <div class="hero-eyebrow"><div class="hero-eline"></div><span>Ingénierie des Systèmes d'Information</span></div>
+    <h1>Ghizlane<br><em>Aitelhaj</em></h1>
+    <p class="hero-role">Ingénieure en Systèmes d'Information et Big Data</p>
+    <p class="hero-desc">À la recherche d'un stage PFE en Data Engineering à partir de février 2027.</p>
+    <div class="hero-contacts">
+      <a href="tel:+212694343852" class="hci"><span class="ic">📞</span>+212 694 343 852</a>
+      <a href="mailto:aitelhaj.ghizlane18@gmail.com" class="hci"><span class="ic">✉</span>aitelhaj.ghizlane18@gmail.com</a>
+      <a href="https://github.com/ghizlane-aitelhaj" target="_blank" class="hci"><span class="ic">⌥</span>ghizlane-aitelhaj</a>
+      <a href="https://www.linkedin.com/in/ghizlane-ait-elhaj-458ab025b/" target="_blank" class="hci"><span class="ic">in</span>LinkedIn</a>
+    </div>
+    <div class="hero-cta">
+      <a href="#experience" class="btn btn-primary">Voir mon parcours</a>
+      <a href="documents/CV_Ghizlane_FR.pdf" download="CV_Ghizlane_FR.pdf" class="btn btn-outline">↓ CV Français</a>
+      <a href="documents/CV_Ghizlane_EN.pdf" download="CV_Ghizlane_EN.pdf" class="btn btn-outline">↓ CV English</a>
+    </div>
+  </div>
+  <div class="hero-panel">
+    <div class="hero-photo-wrap">
+      <img src="img/MaPhoto.jpg" alt="Ghizlane Aitelhaj"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="hero-photo-placeholder" style="display:none;">
+        <span>G</span><p>Photo de profil</p>
+      </div>
+      <div class="hero-caption">
+        <div>
+          <p>Disponible Février 2027</p>
+          <small>Stage PFE · Data Engineering</small>
+        </div>
+        <span class="badge-open"><span class="badge-dot"></span>Open</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sheader reveal">
+    <div class="slabel"><div class="slabel-line"></div><span>Expérience professionnelle</span></div>
+    <h2 class="stitle">Stages ET Missions</h2>
+  </div>
+  <div>
+    <div class="exp-item reveal">
+      <div>
+        <p class="exp-date">Juillet – Août 2026</p>
+        <p class="exp-loc">Safi, Maroc</p>
+      </div>
+      <div>
+        <p class="exp-company">OCP Group — Maroc Chimie</p>
+        <p class="exp-role">Stagiaire Data Engineering · Projet de fin d'année (PFA) · 2 mois<p>
+        <ul class="exp-bul">
+          <li>Conception d’un pipeline d’ingestion et de traitement des données industrielles pour le pilotage de la performance.</li>
+          <li>Mise en place d’une architecture Bronze–Silver–Gold et automatisation des traitements avec Apache Airflow.</li>
+          <li>Préparation des indicateurs de production et de consommation pour leur visualisation sous Tableau.</li>
+        </ul>
+        <div class="etags">
+          <span class="etag etag-g">Python</span>
+          <span class="etag etag-g">Apache Airflow</span>
+          <span class="etag">MinIO</span>
+          <span class="etag">Trino</span>
+          <span class="etag">PostgreSQL</span>
+          <span class="etag">Tableau</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div>
+        <p class="exp-date">Juillet – Août 2025</p>
+        <p class="exp-loc">Télétravail</p>
+      </div>
+      <div>
+        <p class="exp-company">Saiket Systems</p>
+        <p class="exp-role">Stagiaire Data Science · 1 mois</p>
+        <ul class="exp-bul">
+          <li>Nettoyage et préparation des données pour la modélisation</li>
+          <li>Modélisation avec régression logistique, arbre de décision et forêt aléatoire</li>
+          <li>Évaluation des modèles et analyse des performances</li>
+        </ul>
+        <div class="etags">
+          <span class="etag etag-g">Python</span>
+          <span class="etag etag-g">Scikit-learn</span>
+          <span class="etag">Régression logistique</span>
+          <span class="etag">Random Forest</span>
+          <span class="etag">Évaluation modèles</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div>
+        <p class="exp-date">Juin – Juillet 2025</p>
+        <p class="exp-loc">Casablanca</p>
+      </div>
+      <div>
+        <p class="exp-company">Schoolify</p>
+        <p class="exp-role">Stagiaire IA · 1 mois</p>
+        <ul class="exp-bul">
+          <li>Développement d'un chatbot avec LangChain, FAISS, OpenAI et Streamlit</li>
+          <li>Implémentation d'une architecture RAG</li>
+        </ul>
+        <div class="etags">
+          <span class="etag etag-w">LangChain</span>
+          <span class="etag etag-w">OpenAI</span>
+          <span class="etag etag-w">FAISS</span>
+          <span class="etag etag-w">Streamlit</span>
+          <span class="etag">Architecture RAG</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sheader reveal">
+    <div class="slabel"><div class="slabel-line"></div><span>Réalisations</span></div>
+    <h2 class="stitle">Projets sélectionnés</h2>
+    <p class="ssub">Des projets concrets en Data Engineering, Machine Learning, Computer Vision et développement logiciel.</p>
+  </div>
+  <div class="pgrid">
+    <div class="pcard reveal">
+      <div class="phead phead-photo"><img src="img/mucars/interface.png" alt="Formulaire Gradio de prédiction du prix d’une voiture au Maroc" class="project-card-image" loading="lazy"></div>
+      <div class="pbody">
+        <div class="ptags"><span class="etag etag-g">Python</span><span class="etag">Scikit-learn</span><span class="etag">KNN</span><span class="etag">Gradio</span></div>
+        <h3>MUCars: Prédiction des prix de voitures au Maroc</h3>
+        <p>Estimation du prix des voitures d’occasion au Maroc à partir des caractéristiques du véhicule, avec un modèle KNN et une interface Gradio interactive.</p>
+        <div class="pfoot"><span class="pstatus ps-done"><span class="psdot"></span>Projet réalisé</span><button class="project-trigger" data-project="mucars" type="button">Voir le projet →</button></div>
+      </div>
+    </div>
+    <div class="pcard reveal" style="transition-delay:.05s">
+      <div class="phead phead-photo">
+      <img src="img/ex.png"
+         alt="Détection de plaque marocaine avec YOLO"
+         class="project-card-image">
+      </div>
+      <div class="pbody">
+        <div class="ptags"><span class="etag etag-w">YOLO</span><span class="etag">Computer Vision</span><span class="etag">Streamlit</span></div>
+        <h3>Détection et reconnaissance de plaques marocaines</h3>
+        <p>Application de Computer Vision avec deux modèles YOLO : détection des plaques, reconnaissance des caractères et identification de la préfecture.</p>
+        <div class="pfoot">
+          <span class="pstatus ps-done"><span class="psdot"></span>Terminé</span>
+          <button class="project-trigger" data-project="plates" type="button">Voir le projet →</button>
+        </div>
+      </div>
+    </div>
+    <div class="pcard reveal" style="transition-delay:.1s">
+      <div class="phead phead-photo"><img class="project-card-image" src="img/ocp/dashboard.png" alt="Dashboard Tableau de performance industrielle" loading="lazy"></div>
+      <div class="pbody"><div class="ptags"><span class="etag etag-g">Airflow</span><span class="etag">MinIO</span><span class="etag">Trino</span><span class="etag">Tableau</span></div>
+      <h3>Pipeline Data Engineering et Monitoring Industriel</h3>
+      <p>Conception d’un pipeline Bronze–Silver–Gold pour le suivi des KPI industriels, avec orchestration Airflow, dashboard Tableau et alertes Kafka.</p>
+      <div class="pfoot"><span class="pstatus ps-done"><span class="psdot"></span>Stage réalisé</span><button class="project-trigger" data-project="ocp" type="button">Voir le projet →</button></div></div>
+    </div>
+    <div class="pcard reveal" style="transition-delay:.15s">
+      <div class="phead phead-photo"><img src="img/prediction.png" alt="Dashboard Football AI Predictor et probabilités de match" class="project-card-image football-card-image"></div>
+      <div class="pbody">
+        <div class="ptags"><span class="etag etag-g">Python</span><span class="etag etag-gold">AWS</span><span class="etag">Gradient Boosting</span></div>
+        <h3>Prédiction de Matchs de Football</h3>
+        <p>Prédiction de matchs internationaux à partir de 47 399 rencontres, du classement FIFA, de la forme et des confrontations directes.</p>
+        <div class="pfoot"><span class="pstatus ps-live"><span class="psdot"></span>Démo en ligne</span><button class="project-trigger" data-project="football" type="button">Voir le projet →</button></div>
+      </div>
+    </div>
+    <div class="pcard reveal" style="transition-delay:.2s">
+      <div class="phead phead-photo"><img src="img/hr/simulateur.png" alt="Simulateur interactif de prédiction de l'attrition RH" class="project-card-image" loading="lazy"></div>
+      <div class="pbody">
+        <div class="ptags"><span class="etag etag-g">Snowflake</span><span class="etag">dbt</span><span class="etag">Prefect</span><span class="etag">MLflow</span></div>
+        <h3>HR Analytics: Attrition Prediction</h3>
+        <p>Pipeline Data Engineering et MLOps pour prédire le risque de départ des employés : transformations dbt, orchestration Prefect, suivi MLflow et simulateur interactif.</p>
+        <div class="pfoot"><span class="pstatus ps-done"><span class="psdot"></span>Projet réalisé</span><button class="project-trigger" data-project="hr" type="button">Voir le projet →</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- PROJECT DETAIL MODAL : MUCARS -->
+<div class="project-modal" id="mucarsModal" aria-hidden="true">
+  <div class="project-modal-card" role="dialog" aria-modal="true" aria-labelledby="mucarsTitle">
+    <div class="project-modal-top">
+      <button class="project-close" id="mucarsClose" type="button" aria-label="Fermer">×</button>
+      <p class="project-modal-label">Machine Learning · Régression · Application interactive</p>
+      <h2 id="mucarsTitle">MUCars — Prédiction des prix de voitures au Maroc</h2>
+      <p>Une application de prédiction des prix de voitures d’occasion au Maroc, basée sur les caractéristiques du véhicule et un modèle K-Nearest Neighbors (KNN).</p>
+    </div>
+    <div class="project-modal-body">
+      <div class="project-showcase">
+        <div class="showcase-intro"><span>De la description du véhicule au prix estimé</span><h3>Interface et prédiction</h3><p>Captures réelles de l’application Gradio exécutée localement.</p></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">01</span><div><h4>Renseigner les caractéristiques</h4><p>Marque, année, kilométrage, puissance fiscale, carburant, boîte de vitesses, état et origine du véhicule.</p></div></div><img src="img/mucars/interface.png" alt="Formulaire de saisie MUCars" loading="lazy"><p class="project-caption">Formulaire interactif de prédiction développé avec Gradio.</p></div>
+        <div class="showcase-step showcase-featured"><div class="showcase-heading"><span class="showcase-index">02</span><div><h4>Consulter le prix estimé</h4><p>Exemple : 114 200 MAD pour les caractéristiques saisies, avec une fourchette indicative affichée de 102 780 à 125 620 MAD.</p></div></div><img src="img/mucars/resultat.png" alt="Résultat MUCars avec prix estimé de 114 200 MAD" loading="lazy"><p class="project-caption">Exemple de prédiction ; la fourchette présentée par l’application n’est pas une garantie de prix.</p></div>
+      </div>
+      <div class="project-grid">
+        <div><div class="project-block"><h3>Objectif</h3><p>Estimer le prix d’un véhicule d’occasion au Maroc à partir d’informations saisies par l’utilisateur, grâce à une application simple et interactive.</p></div>
+        <div class="project-block"><h3>Approche Machine Learning</h3><div class="project-steps"><div class="project-step"><strong>01 · Données</strong><span>Dataset MUCars-2024 : 101 896 annonces au total ; modèle présenté comme entraîné sur 74 900 annonces.</span></div><div class="project-step"><strong>02 · Prétraitement</strong><span>Encodage des catégories, imputation et mise à l’échelle des variables.</span></div><div class="project-step"><strong>03 · Modélisation</strong><span>Régression K-Nearest Neighbors (K=5) avec scikit-learn.</span></div><div class="project-step"><strong>04 · Interface</strong><span>Formulaire et affichage des résultats via Gradio.</span></div></div></div></div>
+        <div><div class="project-block"><h3>Performances affichées</h3><ul class="project-list"><li>R² : <strong>0,76</strong></li><li>MAE : <strong>27 489 MAD</strong></li><li>RMSE : <strong>52 809 MAD</strong></li></ul></div><div class="project-block"><h3>Technologies</h3><div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">Pandas</span><span class="project-tag">Scikit-learn</span><span class="project-tag">KNN</span><span class="project-tag">Gradio</span><span class="project-tag">Joblib</span></div></div><div class="project-block"><h3>Code source</h3><div class="project-actions"><a class="btn btn-outline" href="https://github.com/ghizlane-aitelhaj/mucars-predict" target="_blank" rel="noopener noreferrer">Consulter le projet sur GitHub ↗</a></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT DETAIL MODAL : LICENSE PLATES -->
+<div class="project-modal" id="platesModal" aria-hidden="true">
+  <div class="project-modal-card" role="dialog" aria-modal="true" aria-labelledby="platesTitle">
+    <div class="project-modal-top">
+      <button class="project-close" id="platesClose" type="button" aria-label="Fermer">×</button>
+      <p class="project-modal-label">Computer Vision · Projet</p>
+      <h2 id="platesTitle">Détection et reconnaissance de plaques marocaines</h2>
+      <p>
+        Application capable de détecter automatiquement les plaques d'immatriculation marocaines,
+        d'identifier leurs caractères, de reconstruire le numéro et d'associer le code numérique
+        à la préfecture ou province correspondante.
+      </p>
+    </div>
+
+    <div class="project-modal-body">
+      <figure class="project-cover">
+        <img src="img/ex.png" alt="Détection YOLO d’une plaque marocaine sur un véhicule" loading="eager">
+        <figcaption>Détection et reconnaissance d’une plaque marocaine — résultat de l’application.</figcaption>
+      </figure>
+      <div class="project-showcase">
+        <div class="showcase-intro"><span>Application en action</span><h3>Du chargement de l'image au résultat</h3><p>Les étapes de l'application Streamlit à travers des captures réelles.</p></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">01</span><div><h4>Interface d'entrée</h4><p>Sélection du mode image et chargement du fichier à analyser.</p></div></div><img src="img/image%20avant.png" alt="Interface Streamlit avant le chargement d'une image" loading="lazy"><p class="project-caption">Interface d'accueil et paramètres de détection.</p></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">02</span><div><h4>Analyse en cours</h4><p>Le fichier est chargé et l'application lance le traitement.</p></div></div><img src="img/encours.png" alt="Application affichant la détection en cours" loading="lazy"><p class="project-caption">État de traitement affiché pendant l'analyse.</p></div>
+        <div class="showcase-step showcase-featured"><div class="showcase-heading"><span class="showcase-index">03</span><div><h4>Résultat : plaque et région reconnues</h4><p>L'application affiche le nombre de plaques détectées, le texte extrait et la région associée au code administratif.</p></div></div><img src="img/aprees.png" alt="Résultat de la reconnaissance et région Casablanca Nouaceur Tamaris" loading="lazy"><p class="project-caption">Exemple réel : une plaque détectée et une région identifiée.</p></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">04</span><div><h4>Mode vidéo</h4><p>L'interface propose également l'import de vidéos MP4, AVI ou MOV.</p></div></div><img src="img/video.png" alt="Interface Streamlit en mode import vidéo" loading="lazy"><p class="project-caption">Sélection du mode vidéo dans l'application.</p></div>
+      </div>
+
+      <div class="project-grid">
+        <div>
+          <div class="project-block">
+            <h3>Le problème</h3>
+            <p>
+              L'objectif est d'automatiser l'analyse d'images ou de vidéos contenant des véhicules
+              afin d'extraire les informations visibles sur leurs plaques d'immatriculation.
+              Le projet combine localisation de la plaque, détection des caractères et interprétation
+              du code administratif marocain.
+            </p>
+          </div>
+
+          <div class="project-block">
+            <h3>Pipeline de traitement</h3>
+            <div class="project-steps">
+              <div class="project-step"><strong>01 · Image / vidéo</strong><span>Entrée fournie à l'application Streamlit.</span></div>
+              <div class="project-step"><strong>02 · Détection</strong><span>Premier modèle YOLO pour localiser la plaque.</span></div>
+              <div class="project-step"><strong>03 · Extraction</strong><span>Recadrage de la zone correspondant à la plaque.</span></div>
+              <div class="project-step"><strong>04 · Caractères</strong><span>Second modèle YOLO pour détecter les caractères.</span></div>
+              <div class="project-step"><strong>05 · Reconstruction</strong><span>Classement spatial des caractères pour reconstruire le numéro.</span></div>
+              <div class="project-step"><strong>06 · Préfecture</strong><span>Association du code numérique à la région d'origine.</span></div>
+            </div>
+          </div>
+          
+          <div class="project-block">
+            <h3>Architecture du système</h3>
+            <div class="project-architecture">
+              <img src="img/structure_systeme.png" alt="Architecture du système de détection de plaques">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="project-block">
+            <h3>Deux modèles YOLO</h3>
+            <ul class="project-list">
+              <li><strong>License Plate Detector</strong> — localisation des plaques dans l'image.</li>
+              <li><strong>Character Detector</strong> — détection des caractères présents sur la plaque.</li>
+            </ul>
+          </div>
+
+          <div class="project-block">
+            <h3>Entraînement</h3>
+            <p>
+              Les modèles ont été entraînés avec Google Colab et un environnement GPU.
+              Deux jeux de données distincts ont été utilisés : un pour les plaques et un pour
+              les caractères. Les modèles entraînés sont ensuite intégrés à l'application.
+            </p>
+          </div>
+
+          <div class="project-block">
+            <h3>Application</h3>
+            <ul class="project-list">
+              <li>Interface Streamlit.</li>
+              <li>Traitement d'images.</li>
+              <li>Traitement de vidéos et des frames.</li>
+              <li>Annotation des résultats avec OpenCV.</li>
+            </ul>
+          </div>
+
+          <div class="project-block">
+            <h3>Technologies</h3>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">YOLO</span>
+              <span class="project-tag">Ultralytics</span>
+              <span class="project-tag">OpenCV</span>
+              <span class="project-tag">Streamlit</span>
+              <span class="project-tag">NumPy</span>
+              <span class="project-tag">Google Colab</span>
+            </div>
+          </div>
+
+          <div class="project-block">
+            <h3>Projet</h3>
+            <div class="project-actions">
+              <a class="btn btn-primary"
+                 href="https://github.com/ghizlane-aitelhaj/plaques_immatriculation_projet"
+                 target="_blank" rel="noopener">Voir sur GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PROJECT DETAIL MODAL : FOOTBALL PREDICTOR -->
+<div class="project-modal football-modal" id="footballModal" aria-hidden="true">
+  <div class="project-modal-card" role="dialog" aria-modal="true" aria-labelledby="footballTitle">
+    <div class="project-modal-top">
+      <button class="project-close" id="footballClose" type="button" aria-label="Fermer">×</button>
+      <p class="project-modal-label">Machine Learning · Cloud AWS · Application interactive</p>
+      <h2 id="footballTitle">Football AI Predictor</h2>
+      <p>Un système de prédiction des résultats de matchs internationaux — victoire à domicile, match nul ou victoire à l'extérieur — combinant feature engineering, Gradient Boosting, API serverless AWS et dashboard Plotly Dash.</p>
+    </div>
+    <div class="project-modal-body">
+      <figure class="project-cover">
+        <img src="img/prediction.png" alt="Résultat de prédiction et trois graphiques du dashboard" loading="eager">
+        <figcaption>Exemple de prédiction Brésil – France : probabilités de victoire, comparaison des équipes et répartition des résultats.</figcaption>
+      </figure>
+      <div class="football-metrics">
+        <div class="football-metric"><strong>47 399</strong><span>Matchs internationaux dans le jeu de données historique (1872–2024)</span></div>
+        <div class="football-metric"><strong>56,28 %</strong><span>Accuracy rapportée pour le modèle final Gradient Boosting</span></div>
+        <div class="football-metric"><strong>3 issues</strong><span>Victoire domicile, nul ou victoire extérieur</span></div>
+      </div>
+      <div class="project-showcase">
+        <div class="showcase-intro"><span>Démonstration</span><h3>De la sélection des équipes à la prédiction</h3><p>Captures réelles de l'application déployée.</p></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">01</span><div><h4>Configurer le match</h4><p>Choix des équipes, du lieu (domicile, extérieur ou neutre) et du type de rencontre (officielle ou amicale).</p></div></div><img src="img/interface.png" alt="Interface du Football AI Predictor" loading="lazy"><p class="project-caption">Dashboard Plotly Dash connecté à une API de prédiction.</p></div>
+        <div class="showcase-step showcase-featured"><div class="showcase-heading"><span class="showcase-index">02</span><div><h4>Visualiser les résultats</h4><p>Prédiction et probabilités des trois issues, diagramme en anneau, radar de comparaison et histogramme.</p></div></div><img src="img/prediction.png" alt="Prédiction et graphiques du match Brésil contre France" loading="lazy"><p class="project-caption">Les probabilités représentent les sorties du modèle, et non des résultats garantis.</p></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">03</span><div><h4>Consulter l'historique</h4><p>Retrouver les prédictions précédentes et leurs probabilités au cours de la session.</p></div></div><img src="img/historique.png" alt="Historique des prédictions dans le dashboard" loading="lazy"><p class="project-caption">Historique des résultats conservé pendant la session.</p></div>
+      </div>
+      <div class="project-grid">
+        <div>
+          <div class="project-block"><h3>Objectif</h3><p>Construire une chaîne Machine Learning de bout en bout pour estimer l'issue d'un match international en exploitant l'historique des rencontres et des indicateurs sportifs.</p></div>
+          <div class="project-block"><h3>Pipeline de traitement</h3><div class="project-steps">
+            <div class="project-step"><strong>01 · Données</strong><span>Résultats historiques internationaux, 1872–2024.</span></div>
+            <div class="project-step"><strong>02 · Préparation</strong><span>Nettoyage, sélection des matchs et préparation des variables.</span></div>
+            <div class="project-step"><strong>03 · Features</strong><span>Forme récente, buts, classement FIFA, points et confrontations directes (H2H).</span></div>
+            <div class="project-step"><strong>04 · Modélisation</strong><span>Comparaison Random Forest / Gradient Boosting et améliorations progressives.</span></div>
+            <div class="project-step"><strong>05 · Inférence</strong><span>Modèle exposé via AWS Lambda et API Gateway.</span></div>
+            <div class="project-step"><strong>06 · Visualisation</strong><span>Dashboard Dash / Plotly hébergé sur Render.</span></div>
+          </div></div>
+          <div class="project-block"><h3>Architecture cloud</h3><p>Amazon S3 pour les artefacts, AWS Lambda pour l'inférence, API Gateway pour l'endpoint REST et EventBridge pour la mise à jour hebdomadaire annoncée dans le projet.</p><div class="project-architecture"><img src="img/architecture.png" alt="Schéma d'architecture du Football AI Predictor" loading="lazy" onerror="this.style.display='none';this.parentElement.style.display='none';"></div></div>
+        </div>
+        <div>
+          <div class="project-block"><h3>Évolution de l'accuracy</h3><ul class="project-list"><li>Random Forest (baseline) : <strong>48,08 %</strong></li><li>Gradient Boosting : <strong>52,86 %</strong></li><li>Filtrage post-1990 : <strong>54,70 %</strong></li><li>Classement FIFA : <strong>56,04 %</strong></li><li>Confrontations directes (H2H) : <strong>56,28 %</strong></li></ul></div>
+          <div class="project-block"><h3>Fonctionnalités</h3><ul class="project-list"><li>Prédiction de trois issues et probabilités associées.</li><li>Comparaison des équipes et des points FIFA.</li><li>Choix du terrain et du type de match.</li><li>Historique des prédictions pendant la session.</li><li>API REST de prédiction serverless.</li></ul></div>
+          <div class="project-block"><h3>Technologies</h3><div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">Pandas</span><span class="project-tag">Scikit-learn</span><span class="project-tag">Gradient Boosting</span><span class="project-tag">AWS Lambda</span><span class="project-tag">API Gateway</span><span class="project-tag">Amazon S3</span><span class="project-tag">EventBridge</span><span class="project-tag">Plotly Dash</span><span class="project-tag">Render</span></div></div>
+          <div class="project-block"><h3>Explorer le projet</h3><div class="project-actions"><a class="btn btn-primary" href="https://football-predictor-9qnl.onrender.com" target="_blank" rel="noopener noreferrer">Démo interactive ↗</a><a class="btn btn-outline" href="https://github.com/ghizlane-aitelhaj/football-predictor" target="_blank" rel="noopener noreferrer">Code GitHub ↗</a></div><p style="margin-top:12px;font-size:.72rem">La démo peut prendre environ 30 secondes à démarrer sur l'hébergement gratuit.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- PROJECT DETAIL MODAL : HR ANALYTICS -->
+<div class="project-modal" id="hrModal" aria-hidden="true">
+  <div class="project-modal-card" role="dialog" aria-modal="true" aria-labelledby="hrTitle">
+    <div class="project-modal-top"><button class="project-close" id="hrClose" type="button" aria-label="Fermer">×</button><p class="project-modal-label">Data Engineering · Machine Learning · MLOps</p><h2 id="hrTitle">HR Analytics &amp; Attrition Prediction</h2><p>Une chaîne de données et de machine learning pour transformer des données RH en estimations de risque d'attrition, visualisées dans un simulateur interactif.</p></div>
+    <div class="project-modal-body">
+      <div class="project-showcase">
+        <div class="showcase-intro"><span>De la donnée à la décision</span><h3>Architecture, orchestration et simulation</h3><p>Trois captures réelles du projet : architecture fonctionnelle, exécution Prefect et application Dash.</p></div>
+        <div class="showcase-step showcase-featured"><div class="showcase-heading"><span class="showcase-index">01</span><div><h4>Simulateur interactif d'attrition</h4><p>Formulaire de profil collaborateur et estimation du risque de départ. La capture illustre un scénario affichant 31,4 % de risque, et non la performance globale du modèle.</p></div></div><img src="img/hr/simulateur.png" alt="Dashboard Dash et simulateur de risque d'attrition à 31,4 %" loading="lazy"></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">02</span><div><h4>Architecture Data Engineering &amp; MLOps</h4><p>Ingestion CSV vers Snowflake, transformations dbt, contrôles de qualité, suivi de dérive envisagé avec Evidently, entraînement Random Forest, registre MLflow et recommandations DiCE.</p></div></div><img src="img/hr/architecture.png" alt="Architecture de la solution HR Analytics" loading="lazy"></div>
+        <div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">03</span><div><h4>Orchestration Prefect</h4><p>Exemple de flow terminé avec succès : ingestion, préparation, qualité des données et étape de machine learning. Capture d'une exécution antérieure.</p></div></div><img src="img/hr/prefect.png" alt="Prefect : flow HR Attrition terminé avec quatre tâches" loading="lazy"></div>
+      </div>
+      <div class="project-grid">
+        <div class="project-panel"><h3>Pipeline et modèle</h3><p>Les données RH sont chargées dans Snowflake, préparées via dbt et vérifiées avant l'entraînement. Un Random Forest est optimisé avec GridSearchCV et validation croisée stratifiée. MLflow centralise les expériences et les versions du modèle.</p></div>
+        <div class="project-panel"><h3>Simulation et explicabilité</h3><p>Le dashboard Dash permet d'explorer des profils employés et leurs risques estimés. Le projet intègre une approche de simulation « What-if » et de recommandations contrefactuelles avec DiCE.</p></div>
+      </div>
+      <div class="project-block" style="margin-top:18px"><h3>Code source</h3><div class="project-actions"><a class="btn btn-outline" href="https://github.com/ghizlane-aitelhaj/hr-analytics-project" target="_blank" rel="noopener noreferrer">Consulter le projet sur GitHub ↗</a></div></div>
+      <div class="project-panel" style="margin-top:18px"><h3>Stack technique</h3><p>Python · SQL · Snowflake · dbt · Prefect · Great Expectations · scikit-learn · MLflow · Dash / Plotly · DiCE · Docker Compose</p><p style="margin-top:10px;font-size:.8rem">Projet de démonstration sur données RH historiques. Les captures illustrent des fonctionnalités et une exécution, sans prétendre à un déploiement en production.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT DETAIL MODAL : OCP -->
+<div class="project-modal" id="ocpModal" aria-hidden="true"><div class="project-modal-card" role="dialog" aria-modal="true" aria-labelledby="ocpTitle">
+<div class="project-modal-top"><button class="project-close" id="ocpClose" type="button" aria-label="Fermer">×</button><p class="project-modal-label">Data Engineering · Projet de stage · 2026</p><h2 id="ocpTitle">Pipeline Data Engineering & Monitoring Industriel</h2><p>Pipeline analytique Bronze–Silver–Gold pour transformer des données de production, consommation et arrêts en indicateurs de performance des unités sulfuriques PS3/PS4. Démonstration complémentaire de traitement d’événements avec Kafka.</p></div>
+<div class="project-modal-body"><div class="project-showcase"><div class="showcase-intro"><span>Du pipeline au dashboard</span><h3>Architecture, exécution et résultats</h3><p>Captures du dashboard Tableau, des BPMN et des outils d’orchestration, de requêtage et de streaming.</p></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">01</span><div><h4>Dashboard Tableau</h4><p>Indicateurs industriels : TRG, rendement, consommation spécifique, arrêts, MTTR et MTBF.</p></div></div><img src="img/ocp/dashboard.png" alt="Dashboard Tableau" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">02</span><div><h4>BPMN — Pipeline analytique</h4><p>De l’ingestion Bronze à l’actualisation des tableaux de bord.</p></div></div><img src="img/ocp/bpmn_pipeline.png" alt="BPMN — Pipeline analytique" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">03</span><div><h4>BPMN — Alertes sur les arrêts</h4><p>Logique de surveillance des événements d’arrêt via Kafka.</p></div></div><img src="img/ocp/bpmn_alertes.png" alt="BPMN — Alertes sur les arrêts" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">04</span><div><h4>Orchestration Airflow</h4><p>Exécution du DAG Bronze → Silver → Gold.</p></div></div><img src="img/ocp/airflow.png" alt="Orchestration Airflow" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">05</span><div><h4>Tables KPI Gold</h4><p>Tables analytiques consultées depuis DBeaver.</p></div></div><img src="img/ocp/tables_gold.png" alt="Tables KPI Gold" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">06</span><div><h4>Connexion Trino</h4><p>Connexion validée entre DBeaver et Trino.</p></div></div><img src="img/ocp/trino_connexion.png" alt="Connexion Trino" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">07</span><div><h4>Requêtes SQL</h4><p>Calcul et vérification des indicateurs par ligne.</p></div></div><img src="img/ocp/trino_sql.png" alt="Requêtes SQL" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">08</span><div><h4>Topic Kafka</h4><p>Inspection des événements publiés sur le topic des arrêts.</p></div></div><img src="img/ocp/kafka_ui.png" alt="Topic Kafka" loading="lazy"></div><div class="showcase-step"><div class="showcase-heading"><span class="showcase-index">09</span><div><h4>Producer et Consumer</h4><p>Consommation des événements et affichage des alertes.</p></div></div><img src="img/ocp/kafka_console.png" alt="Producer et Consumer" loading="lazy"></div></div>
+<div class="project-grid"><div><div class="project-block"><h3>Objectif</h3><p>Centraliser les fichiers de suivi industriel, fiabiliser les calculs et faciliter l’analyse de la performance grâce à des KPI consolidés.</p></div><div class="project-block"><h3>Pipeline de traitement</h3><div class="project-steps"><div class="project-step"><strong>Bronze</strong><span>Ingestion de fichiers Excel en Parquet / MinIO.</span></div><div class="project-step"><strong>Silver</strong><span>Nettoyage, normalisation et règles métier.</span></div><div class="project-step"><strong>Gold</strong><span>Agrégation des KPI dans PostgreSQL.</span></div><div class="project-step"><strong>Visualisation</strong><span>Tableau et exploration SQL via Trino.</span></div></div></div></div>
+<div><div class="project-block"><h3>Technologies</h3><div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">SQL</span><span class="project-tag">Airflow</span><span class="project-tag">MinIO</span><span class="project-tag">PostgreSQL</span><span class="project-tag">Trino</span><span class="project-tag">Apache Kafka</span><span class="project-tag">Docker</span><span class="project-tag">Tableau</span><span class="project-tag">DBeaver</span></div></div><div class="project-block"><h3>Streaming Kafka</h3><p>Publication et consommation d’événements d’arrêt ; détection d’arrêts longs et affichage des alertes dans le consumer.</p></div><div class="project-block"><h3>Code source</h3><div class="project-actions"><a href="https://github.com/ghizlane-aitelhaj/Projet_stage" target="_blank" rel="noopener noreferrer">Consulter le projet sur GitHub ↗</a></div></div><div class="project-block"><h3>À propos des captures</h3><p>Les images présentent une démonstration technique. La publication de données ou d’éléments internes OCP doit être autorisée.</p></div></div></div></div></div></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sheader reveal">
+    <div class="slabel"><div class="slabel-line"></div><span>Savoir-faire technique</span></div>
+    <h2 class="stitle">Compétences</h2>
+    <p class="ssub">Compétences développées au fil de mes stages, projets Data Engineering, Big Data et Machine Learning.</p>
+  </div>
+  <div class="skgrid">
+    <div>
+      <div class="skgroup reveal"><p class="skgroup-title">Langages &amp; analyse</p><div class="spills"><span class="spill s">Python</span><span class="spill s">SQL</span><span class="spill">Java</span><span class="spill">C</span><span class="spill">Pandas · NumPy</span><span class="spill">Analyse exploratoire (EDA)</span></div></div>
+      <div class="skgroup reveal"><p class="skgroup-title">Data Engineering &amp; orchestration</p><div class="spills"><span class="spill s">ETL / ELT</span><span class="spill s">Architecture Bronze–Silver–Gold</span><span class="spill">Apache Airflow</span><span class="spill">Prefect</span><span class="spill">dbt</span><span class="spill">Trino</span><span class="spill">Apache Iceberg</span></div></div>
+      <div class="skgroup reveal"><p class="skgroup-title">Big Data &amp; streaming</p><div class="spills"><span class="spill s">PySpark · Apache Spark</span><span class="spill s">Hadoop · HDFS</span><span class="spill">Apache Kafka</span><span class="spill">Hive · HBase</span><span class="spill">Snowflake</span></div></div>
+    </div>
+    <div>
+      <div class="skgroup reveal"><p class="skgroup-title">Machine Learning &amp; MLOps</p><div class="spills"><span class="spill s">Scikit-learn</span><span class="spill s">Régression · Classification</span><span class="spill">Feature Engineering</span><span class="spill">MLflow</span><span class="spill">Validation croisée</span><span class="spill">Évaluation des modèles</span><span class="spill">Data Drift · PSI · KS</span><span class="spill">Great Expectations</span></div></div>
+      <div class="skgroup reveal"><p class="skgroup-title">Bases de données &amp; stockage</p><div class="spills"><span class="spill s">PostgreSQL</span><span class="spill s">SQL Server · MySQL</span><span class="spill">MongoDB</span><span class="spill">Neo4j</span><span class="spill">Oracle</span><span class="spill">MinIO · S3</span></div></div>
+      <div class="skgroup reveal"><p class="skgroup-title">Cloud, déploiement &amp; visualisation</p><div class="spills"><span class="spill s">AWS (S3 · Lambda · API Gateway)</span><span class="spill s">Docker · Docker Compose</span><span class="spill">Git · GitHub</span><span class="spill">Tableau · Power BI</span><span class="spill">Dash · Plotly</span><span class="spill">Streamlit · Gradio</span><span class="spill">FastAPI</span><span class="spill">VMware</span></div></div>
+      <div class="skgroup reveal"><p class="skgroup-title">IA appliquée</p><div class="spills"><span class="spill s">LangChain · RAG</span><span class="spill s">FAISS</span><span class="spill">YOLO · Computer Vision</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="sheader reveal">
+    <div class="slabel"><div class="slabel-line"></div><span>Parcours académique</span></div>
+    <h2 class="stitle">Formation</h2>
+  </div>
+  <div>
+    <div class="edu-item reveal">
+      <div><p class="edu-yr">2024 – Présent</p></div>
+      <div>
+        <p class="edu-school">ENSA Berrechid</p>
+        <p class="edu-prog">Cycle ingénieur en Systèmes d'Information et Big Data</p>
+        <p class="edu-loc">Maroc</p>
+      </div>
+    </div>
+    <div class="edu-item reveal">
+      <div><p class="edu-yr">2023 – 2024</p></div>
+      <div>
+        <p class="edu-school">ENSA Berrechid</p>
+        <p class="edu-prog">Cycle préparatoire intégré — 2ème année</p>
+        <p class="edu-loc">Maroc</p>
+      </div>
+    </div>
+    <div class="edu-item reveal">
+      <div><p class="edu-yr">2022 – 2023</p></div>
+      <div>
+        <p class="edu-school">ENSA Safi</p>
+        <p class="edu-prog">Cycle préparatoire intégré — 1ère année</p>
+        <p class="edu-loc">Maroc</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+  <div class="sheader reveal">
+    <div class="slabel"><div class="slabel-line"></div><span>Certifications</span></div>
+    <h2 class="stitle">Certificats</h2>
+  </div>
+  <div class="cgrid">
+    <a href="img/pythoncertif.png" download class="ccard reveal">
+      <div class="clogo" style="background:#E8F5E8;">🐍</div>
+      <h3>Python</h3><p>Programmation Python — Openclassrooms</p><span class="cdl">Télécharger →</span>
+    </a>
+    <a href="img/datacertif.png" download class="ccard reveal" style="transition-delay:.05s">
+      <div class="clogo" style="background:#EAE7F5;">📊</div>
+      <h3>Data Analysis</h3><p>Analyse de données avec Python — Coursera</p><span class="cdl">Télécharger →</span>
+    </a>
+    <a href="img/Ccertif.png" download class="ccard reveal" style="transition-delay:.1s">
+      <div class="clogo" style="background:#EDEDED;">⚙️</div>
+      <h3>Langage C</h3><p>Programmation C — OpenClassrooms</p><span class="cdl">Télécharger →</span>
+    </a>
+    <a href="img/sqlcertif.png" download class="ccard reveal" style="transition-delay:.15s">
+      <div class="clogo" style="background:#F5EAE2;">🗄️</div>
+      <h3>SQL</h3><p>Bases de données SQL — Udemy</p><span class="cdl">Télécharger →</span>
+    </a>
+    <a href="img/certificate_airflow.png" download class="ccard reveal" style="transition-delay:.2s">
+      <div class="clogo" style="background:#FFF3E0;">🌬️</div>
+      <h3>Apache Airflow</h3><p>Orchestration de pipelines de données — DataCamp</p><span class="cdl">Télécharger →</span>
+    </a>
+    <a href="img/certificate_aws.png" download class="ccard reveal" style="transition-delay:.25s">
+      <div class="clogo" style="background:#FFF8E1;">☁️</div>
+      <h3>AWS Cloud</h3><p>Amazon Web Services — DataCamp</p><span class="cdl">Télécharger →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="sheader reveal">
+    <div class="slabel"><div class="slabel-line"></div><span>Engagement</span></div>
+    <h2 class="stitle">Activités parascolaires</h2>
+  </div>
+  <div class="agrid">
+    <div class="acard reveal">
+      <div class="atop"><span class="abadge abadge-g">Club Tech</span></div>
+      <h3>Club CEC</h3>
+      <p class="arole">Responsable Événementielle</p>
+      <p>Organisation d'activités parascolaires pour renforcer l'engagement et l'esprit de communauté au sein de l'ENSA Berrechid.</p>
+      <ul class="apts">
+        <li>Ateliers dev web, mobile et data science</li>
+        <li>Création de contenu éducatif informatique</li>
+        <li>Organisation de compétitions inter-écoles</li>
+      </ul>
+    </div>
+    <div class="acard reveal" style="transition-delay:.1s">
+      <div class="atop"><span class="abadge abadge-w">Club Social</span></div>
+      <h3>Club Rotaract ENSAB</h3>
+      <p class="arole">Responsable Média</p>
+      <p>Gestion de la communication et de la présence médiatique du club — couverture des événements, création de contenu et valorisation des actions sociales.</p>
+      <ul class="apts">
+        <li>Création et gestion des contenus sur les réseaux sociaux</li>
+        <li>Couverture photo/vidéo des événements du club</li>
+        <li>Communication autour des campagnes de bénévolat</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="cwrap">
+    <div class="reveal">
+      <div class="slabel"><div class="slabel-line"></div><span>Restons en contact</span></div>
+      <h2 class="stitle">Me contacter</h2>
+      <p class="ssub">Ouverte aux opportunités de stage PFE en Data Engineering à partir de Février 2027.</p>
+      <div class="citems">
+        <a href="https://www.linkedin.com/in/ghizlane-ait-elhaj-458ab025b/" target="_blank" class="ci">
+          <div class="ci-icon" style="background:#0A66C2;color:#fff;font-weight:700;font-size:.72rem;">in</div>
+          <div class="ci-text"><strong>LinkedIn</strong><span>Ghizlane Ait Elhaj</span></div>
+        </a>
+        <a href="mailto:aitelhaj.ghizlane18@gmail.com" class="ci">
+          <div class="ci-icon" style="background:#EA4335;color:#fff;">✉</div>
+          <div class="ci-text"><strong>Email</strong><span>aitelhaj.ghizlane18@gmail.com</span></div>
+        </a>
+        <a href="https://github.com/ghizlane-aitelhaj" target="_blank" class="ci">
+          <div class="ci-icon" style="background:#24292E;color:#fff;font-size:.78rem;">⌥</div>
+          <div class="ci-text"><strong>GitHub</strong><span>ghizlane-aitelhaj</span></div>
+        </a>
+        <a href="https://wa.me/212694343852" target="_blank" class="ci">
+          <div class="ci-icon" style="background:#25D366;color:#fff;">📱</div>
+          <div class="ci-text"><strong>WhatsApp</strong><span>+212 694 343 852</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.15s">
+      <div class="cvbox">
+        <h3>Mon CV</h3>
+        <p>Parcours académique complet, expériences professionnelles, compétences techniques et projets.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+          <a href="documents/CV_Ghizlane_FR.pdf" download="CV_Ghizlane_FR.pdf" class="btn btn-light">↓&nbsp; CV Français</a>
+          <a href="documents/CV_Ghizlane_EN.pdf" download="CV_Ghizlane_EN.pdf" class="btn btn-light">↓&nbsp; CV English</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Ghizlane Aitelhaj — Data Engineering · Big Data</p>
+  <div class="flinks">
+    <a href="https://github.com/ghizlane-aitelhaj" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/ghizlane-ait-elhaj-458ab025b/" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('navbar');
+  const tog=document.getElementById('navToggle');
+  const lnk=document.getElementById('navLinks');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>10));
+  tog.addEventListener('click',()=>lnk.classList.toggle('open'));
+  lnk.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>lnk.classList.remove('open')));
+  const obs=new IntersectionObserver((e)=>{
+    e.forEach((el,i)=>{if(el.isIntersecting)setTimeout(()=>el.target.classList.add('visible'),i*65);});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Project detail modal
+  const platesModal = document.getElementById('platesModal');
+  const platesClose = document.getElementById('platesClose');
+  const platesTrigger = document.querySelector('[data-project="plates"]');
+
+  function openPlatesProject(){
+    platesModal.classList.add('open');
+    platesModal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+
+  function closePlatesProject(){
+    platesModal.classList.remove('open');
+    platesModal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  platesTrigger?.addEventListener('click', openPlatesProject);
+  platesClose?.addEventListener('click', closePlatesProject);
+
+  platesModal?.addEventListener('click', (e)=>{
+    if(e.target === platesModal) closePlatesProject();
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && platesModal?.classList.contains('open')){
+      closePlatesProject();
+    }
+  });
+
+  // MUCars project detail
+  const mucarsModal=document.getElementById('mucarsModal');
+  const mucarsTrigger=document.querySelector('[data-project="mucars"]');
+  const mucarsClose=document.getElementById('mucarsClose');
+  function closeMucars(){mucarsModal.classList.remove('open');mucarsModal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  mucarsTrigger?.addEventListener('click',()=>{mucarsModal.classList.add('open');mucarsModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';});
+  mucarsClose?.addEventListener('click',closeMucars);
+  mucarsModal?.addEventListener('click',e=>{if(e.target===mucarsModal)closeMucars();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mucarsModal?.classList.contains('open'))closeMucars();});
+
+  // Football project detail
+  const footballModal=document.getElementById('footballModal');
+  const footballTrigger=document.querySelector('[data-project="football"]');
+  const footballClose=document.getElementById('footballClose');
+  function closeFootball(){footballModal.classList.remove('open');footballModal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  footballTrigger?.addEventListener('click',()=>{footballModal.classList.add('open');footballModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';});
+  footballClose?.addEventListener('click',closeFootball);
+  footballModal?.addEventListener('click',e=>{if(e.target===footballModal)closeFootball();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&footballModal?.classList.contains('open'))closeFootball();});
+
+  // OCP project detail
+  const ocpModal=document.getElementById('ocpModal');
+  const ocpTrigger=document.querySelector('[data-project="ocp"]');
+  const ocpClose=document.getElementById('ocpClose');
+  function closeOcp(){ocpModal.classList.remove('open');ocpModal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  ocpTrigger?.addEventListener('click',()=>{ocpModal.classList.add('open');ocpModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';});
+  ocpClose?.addEventListener('click',closeOcp);
+  ocpModal?.addEventListener('click',e=>{if(e.target===ocpModal)closeOcp();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ocpModal?.classList.contains('open'))closeOcp();});
+
+  // HR Analytics project detail
+  const hrModal=document.getElementById('hrModal');
+  const hrTrigger=document.querySelector('[data-project="hr"]');
+  const hrClose=document.getElementById('hrClose');
+  function closeHr(){hrModal.classList.remove('open');hrModal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  hrTrigger?.addEventListener('click',()=>{hrModal.classList.add('open');hrModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';});
+  hrClose?.addEventListener('click',closeHr);
+  hrModal?.addEventListener('click',e=>{if(e.target===hrModal)closeHr();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&hrModal?.classList.contains('open'))closeHr();});
+</script>
+</body>
+</html>
